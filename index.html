@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список подарков</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Список подарков</h1>
+    <table id="gifts-table">
+        <thead>
+            <tr>
+                <th>Описание подарка</th>
+                <th>Комментарий</th>
+                <th>Подарок выбран</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Данные будут загружены сюда -->
+        </tbody>
+    </table>
+    <script>
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbxB-Mpa41vcDWqzV_VmhkyO_PxcDgMBkyewCeVVVDOBFzUxn5VJ_qV3U0xE8NnBiQf4gg/exec'; // Вставьте URL вашего скрипта
+
+        async function fetchData() {
+            const response = await fetch(scriptUrl);
+            const data = await response.json();
+            const tbody = document.querySelector('#gifts-table tbody');
+            tbody.innerHTML = '';
+
+            data.slice(1).forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row[0]}</td>
+                    <td>${row[1]}</td>
+                    <td>
+                        <input type="checkbox" ${row[2] === 'TRUE' ? 'checked' : ''}
+                            data-description="${row[0]}">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', async (e) => {
+                    const description = e.target.getAttribute('data-description');
+                    const selected = e.target.checked;
+
+                    await fetch(scriptUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ description, selected }),
+                    });
+                });
+            });
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
