@@ -1,156 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishlist</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playwrite+CO+Guides&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #b36f919c;
-            width: max-content;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #fb0a85;
-            text-align: center;
-            font-family: "Lobster", serif;
-            font-style: normal;
-            font-weight: 400;
-            font-size: x-large;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Wishlist</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playwrite+CO+Guides&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+    </head>
 
+    <body>
+        <h1>Sasha's Wishlist</h1>
+        <table id="gifts-table">
+            <thead>
+                <tr>
+                    <th>Подарок</th>
+                    <th>Комментарий</th>
+                    <th>Подарок выбран</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        table tr:nth-child(even) {
-            background-color: #a16783f1; /* Light background for even rows */
-        }
-        h1 {
-            font-family: 'Dancing Script', sans-serif;
-            font-size: 4em;
-        }
-        input[type="checkbox"] {
-            transform: scale(1.2);
-        }
+            </tbody>
+        </table>
+        <div class='loader-container'>
+            <span id="loader" class="loader" style="display: block;"></span>
+        </div>
 
-        /* Hide the default checkbox */
-    input[type="checkbox"] {
-        display: none;
-      }
+        <script>
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwSLaShL-N5m5XLscc8Yh6StmqVoWm2935RFpMtJV-3s5HBnyYH5RoImEi6OZ_cqtd6gg/exec';
 
-      /* Custom checkbox style */
-      label {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-      }
+            async function fetchData() {
+                const loader = document.getElementById('loader');
 
-      .custom-checkbox {
-        width: 20px;
-        height: 20px;
-        border: 2px solid #333;
-        border-radius: 4px;
-        display: inline-block;
-        position: relative;
-      }
+                let response;
 
-      /* Checkmark when the checkbox is checked */
-      input[type="checkbox"]:checked + .custom-checkbox::before {
-        content: '';
-        position: absolute;
-        top: 2px;
-        left: 6px;
-        width: 6px;
-        height: 12px;
-        border: solid #fff;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-      }
+                try {
+                    response = await fetch(scriptUrl,
+                    {
+                        method: 'GET',
+                    });
 
-      /* Custom checkbox checked background */
-      input[type="checkbox"]:checked + .custom-checkbox {
-        background-color: #333;
-        border-color: #333;
-      }
-    </style>
-</head>
-<body>
-    <h1>Sasha's Wishlist</h1>
-    <table id="gifts-table">
-        <thead>
-            <tr>
-                <th>Подарок</th>
-                <th>Комментарий</th>
-                <th>Подарок выбран</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Данные будут загружены сюда -->
-        </tbody>
-    </table>
-    <script>
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzx_rBoR5jtVhP-fGyrjV27DrsmMJhGSF5JHxLVVjKIFmKMkfR-Xe2DHEe6j0OgbjdszQ/exec';
+                } catch (error) {
+                    console.error('Error:', error);
+                    const p = document.createElement('p');
+                    p.textContent = 'Failed to load data. Please try again later.';
+                    document.body.appendChild(p);
+                    return;
+                } finally {
+                    loader.style.display = 'none';
+                }
 
+                const data = await response.json();
+                const tbody = document.querySelector('#gifts-table tbody');
+                tbody.innerHTML = '';
 
-        async function fetchData() {
-            const response = await fetch(scriptUrl,
-                {
-                    method: 'GET',
+                data.slice(1).forEach(row => {
+                    appendRow(row, tbody);
                 });
 
-            console.log(JSON.stringify(response));
-            const data = await response.json();
-            const tbody = document.querySelector('#gifts-table tbody');
-            tbody.innerHTML = '';
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', async (e) => {
+                        const description = e.target.getAttribute('data-description');
+                        const selected = e.target.checked;
 
-            data.slice(1).forEach(row => {
+                        await fetch(scriptUrl, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ description, selected }),
+                        });
+                    });
+                });
+            }
+
+            function appendRow(row, tbody) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${row[0]}</td>
-                    <td>${row[1]}</td>
+                    <td>${replaceUrlsWithLinks(row[1])}</td>
                     <td>
                         <label>
-                        <input type="checkbox" ${row[2] ? 'checked' : ''}
+                        <input type="checkbox" ${row[2] ? 'checked disabled' : ''}
                             data-description="${row[0]}">
-                            <span class="custom-checkbox"></span>
+                            <span class="custom-checkbox ${row[2] ? ' checkbox-fetched-checked' : 'checkbox-fetched-unchecked'}"></span>
                         </label>
 
                     </td>
                 `;
                 tbody.appendChild(tr);
-            });
+            }
 
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.addEventListener('change', async (e) => {
-                    const description = e.target.getAttribute('data-description');
-                    const selected = e.target.checked;
-
-                    await fetch(scriptUrl, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ description, selected }),
-                    });
+            function replaceUrlsWithLinks (text) {
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                return text.replace(urlRegex, (url) => {
+                    const urlObj = new URL(url);
+                    const domain = urlObj.hostname;
+                    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${domain}</a>`;
                 });
-            });
-        }
+            };
 
-        fetchData();
-    </script>
-</body>
+            fetchData();
+        </script>
+    </body>
 </html>
