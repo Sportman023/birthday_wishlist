@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список подарков</title>
+    <title>Список подарков 2</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-    <h1>Список подарков</h1>
+    <h1>Список подарков 2</h1>
     <table id="gifts-table">
         <thead>
             <tr>
@@ -43,10 +43,16 @@
         </tbody>
     </table>
     <script>
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyDEVl1RiTK4otkrOlL0JqG63zqVNPpsfLmI__KrwMWsVKT_4ZtcxB4a2OH9sDETvv73w/exec'; // Вставьте URL вашего скрипта
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzx_rBoR5jtVhP-fGyrjV27DrsmMJhGSF5JHxLVVjKIFmKMkfR-Xe2DHEe6j0OgbjdszQ/exec';
+
 
         async function fetchData() {
-            const response = await fetch(scriptUrl);
+            const response = await fetch(scriptUrl,
+                {
+                    method: 'GET',
+                });
+
+            console.log(JSON.stringify(response));
             const data = await response.json();
             const tbody = document.querySelector('#gifts-table tbody');
             tbody.innerHTML = '';
