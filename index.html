@@ -104,6 +104,16 @@
                 });
             };
 
+            function adjustBodyWidth() {
+                document.body.style.width = window.innerWidth + 'px';
+            }
+
+            window.addEventListener('resize', adjustBodyWidth);
+            window.addEventListener('orientationchange', adjustBodyWidth);
+
+            // Initial adjustment
+            adjustBodyWidth();
+
             fetchData();
         </script>
     </body>
