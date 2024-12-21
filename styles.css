@@ -76,7 +76,7 @@ input[type="checkbox"]:checked + .checkbox-fetched-checked {
 }
 a {
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 4px 4px;
     border-radius: 8px;
     font-family: Monospace;
     text-align: center;
