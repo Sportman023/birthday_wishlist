@@ -23,11 +23,11 @@ async function fetchData() {
     const tbody = document.querySelector('#gifts-table tbody');
     tbody.innerHTML = '';
 
-    data.slice(1).forEach(row => {
+    data.slice(1).forEach((row) => {
         appendRow(row, tbody);
     });
 
-    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
         checkbox.addEventListener('change', async (e) => {
             const description = e.target.getAttribute('data-description');
             const selected = e.target.checked;
@@ -70,7 +70,7 @@ function replaceUrlsWithLinks(text) {
 }
 
 function adjustBodyWidth() {
-    document.body.style.width = window.innerWidth + 'px';
+    document.body.style.width = '100%';
 }
 
 window.addEventListener('resize', adjustBodyWidth);
