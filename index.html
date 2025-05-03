@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Wishlist</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playwrite+CO+Guides&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playwrite+CO+Guides&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="styles.css" />
     </head>
-
     <body>
-        <h1>Wishlist</h1>
-        <p>Дорогие гости, здесь вы можете найти идеи для подарка Лере. Список составлен, чтобы облегчить вам выбор и безусловно вы можете подарить то, что в него не входит.<br>
-        После того как выбрали подарок из списка, пожалуйста отметьте его.<br>
-        Если нужно отменить ранее сделанный выбор, то напишите мне.<br></p>
-        <p>Список еще будет дополнен.</p>
-        <table id="gifts-table">
-            <thead>
-                <tr>
-                    <th>Подарок</th>
-                    <th>Комментарий</th>
-                    <th>Подарок выбран</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-        <div class='loader-container'>
-            <span id="loader" class="loader" style="display: block;"></span>
+        <div class="container">
+            <h1>Wishlist</h1>
+            <p>
+                Дорогие гости, здесь вы можете найти идеи для подарка Лере. Список составлен, чтобы облегчить вам выбор и безусловно вы можете подарить то, что в него не входит.<br />
+                После того как выбрали подарок из списка, пожалуйста отметьте его.<br />
+                Если нужно отменить ранее сделанный выбор, то напишите мне.<br />
+            </p>
+            <table id="gifts-table">
+                <thead>
+                    <tr>
+                        <th>Подарок</th>
+                        <th>Комментарий</th>
+                        <th>Подарок выбран</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="loader-container">
+                <span id="loader" class="loader" style="display: block;"></span>
+            </div>
         </div>
-
         <script src="scripts.js"></script>
     </body>
 </html>
